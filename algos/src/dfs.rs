@@ -2,6 +2,7 @@
 // 非递归做法是采用栈
 // 前序遍历 (preorder traversal) - 中序遍历 (inorder traversal) - 后序遍历 (postorder traversal)
 // https://leetcode.cn/problems/maximum-depth-of-binary-tree/solutions/1797307/by-carlsun-2-ojzh/
+// https://programmercarl.com/
 
 use std::cell::RefCell;
 use std::rc::Rc;
@@ -66,34 +67,6 @@ pub fn max_depth_recusion(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
 //     recur(root, count);
 //     return resMax;
 // };
-
-
-// 迭代 & 层序遍历bfs & stack
-#[allow(dead_code)]
-pub fn max_depth_iteration(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
-    if root.is_none(){
-        return 0;
-    }
-    let mut max_depth: i32 = 0;
-    let mut stack = vec![root.unwrap()];
-    while !stack.is_empty() {
-        let num = stack.len();
-        for _i in 0..num{
-            let top = stack.remove(0);
-            if top.borrow_mut().left.is_some(){
-                stack.push(top.borrow_mut().left.take().unwrap());
-            }
-            if top.borrow_mut().right.is_some(){
-                stack.push(top.borrow_mut().right.take().unwrap());
-            }
-            }
-        max_depth+=1;
-        }
-    max_depth
-}
-
-
-
 
 #[cfg(test)]
 mod dfs_tests {
