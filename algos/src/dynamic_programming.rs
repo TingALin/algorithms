@@ -2,8 +2,9 @@
 // https://leetcode.cn/problems/house-robber/description/
 // https://leetcode.cn/problems/climbing-stairs/solutions/2560716/jiao-ni-yi-bu-bu-si-kao-dong-tai-gui-hua-7zm1/
 
+#[allow(dead_code)]
 // 递推方程：dp[i] = max(dp[i-1], dp[i-2]+nums[i]);
-pub fn rob(nums: Vec<i32>) -> i32 {
+pub fn rob_a(nums: Vec<i32>) -> i32 {
     let mut dp = [0; 2];
     for num in nums {
         dp = [dp[1], (dp[0] + num).max(dp[1])];
@@ -11,7 +12,8 @@ pub fn rob(nums: Vec<i32>) -> i32 {
     dp[1]
 }
 
-pub fn rob_a(nums: Vec<i32>) -> i32 {
+#[allow(dead_code)]
+pub fn rob_b(nums: Vec<i32>) -> i32 {
     if nums.len() == 1 { return nums[0]; }
     let mut prev_prev = nums[0];
     let mut prev = nums[0].max(nums[1]);
@@ -22,8 +24,6 @@ pub fn rob_a(nums: Vec<i32>) -> i32 {
     }
     prev
 }
-
-
 
 // O(2^n)
 #[allow(dead_code)]
@@ -64,14 +64,46 @@ fn climb_stairs_c(n:i32) -> i32{
     f1
 }
 
+// O(n)
 #[allow(dead_code)]
-fn max_profit(prices: Vec<i32>) -> i32 {
-
+pub fn max_profit(prices: Vec<i32>) -> i32 {
+    let mut ans = 0;
+    let mut min_price = prices[0];
+    for &p in &prices {
+        ans = ans.max(p - min_price);
+        min_price = min_price.min(p);
+    }
+    ans
 }
+
+// 双指针
+pub fn max_profit_two_pointer(prices: Vec<i32>) -> i32 {
+    if prices.len() == 1 {
+        return 0;
+    }
+    let mut ans = 0;
+    let (mut slow, mut fast) = (0, 1);
+    while fast < prices.len() {
+        if prices[slow] > prices[fast] {
+            slow = fast;
+        } else {
+            ans = ans.max(prices[fast] - prices[slow]);
+        }
+        fast += 1;
+    }
+    ans
+}
+
 
 #[cfg(test)]
 mod dy_tests {
     use super::*;
+
+    #[test]
+    fn robing_houses() {
+        let list_of_house = vec![1,4,5,1,2,3];
+        assert_eq!(rob_a(list_of_house), 9);
+    }
 
     #[test]
     fn climb_stairs() {
