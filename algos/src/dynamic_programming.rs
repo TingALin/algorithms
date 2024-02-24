@@ -1,6 +1,30 @@
 // https://leetcode.cn/problems/best-time-to-buy-and-sell-stock/description/
-
+// https://leetcode.cn/problems/house-robber/description/
 // https://leetcode.cn/problems/climbing-stairs/solutions/2560716/jiao-ni-yi-bu-bu-si-kao-dong-tai-gui-hua-7zm1/
+
+// 递推方程：dp[i] = max(dp[i-1], dp[i-2]+nums[i]);
+pub fn rob(nums: Vec<i32>) -> i32 {
+    let mut dp = [0; 2];
+    for num in nums {
+        dp = [dp[1], (dp[0] + num).max(dp[1])];
+    }
+    dp[1]
+}
+
+pub fn rob_a(nums: Vec<i32>) -> i32 {
+    if nums.len() == 1 { return nums[0]; }
+    let mut prev_prev = nums[0];
+    let mut prev = nums[0].max(nums[1]);
+    for i in 2 .. nums.len() {
+        let next = prev.max(prev_prev + nums[i]);
+        prev_prev = prev;
+        prev = next;
+    }
+    prev
+}
+
+
+
 // O(2^n)
 #[allow(dead_code)]
 fn climb_stairs_a(n: i32) -> i32 {
