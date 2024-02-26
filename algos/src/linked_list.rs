@@ -27,10 +27,10 @@ impl List {
         match *self {
             Cons(head, ref tail) => {
                 format!("{}, {}", head, tail.stringify())
-            },
+            }
             Nil => {
                 format!("Nil")
-            },
+            }
         }
     }
 }

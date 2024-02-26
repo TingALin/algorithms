@@ -13,10 +13,12 @@ pub fn rob_a(nums: Vec<i32>) -> i32 {
 
 #[allow(dead_code)]
 pub fn rob_b(nums: Vec<i32>) -> i32 {
-    if nums.len() == 1 { return nums[0]; }
+    if nums.len() == 1 {
+        return nums[0];
+    }
     let mut prev_prev = nums[0];
     let mut prev = nums[0].max(nums[1]);
-    for i in 2 .. nums.len() {
+    for i in 2..nums.len() {
         let next = prev.max(prev_prev + nums[i]);
         prev_prev = prev;
         prev = next;
@@ -28,24 +30,24 @@ pub fn rob_b(nums: Vec<i32>) -> i32 {
 // O(2^n)
 #[allow(dead_code)]
 fn climb_stairs_a(n: i32) -> i32 {
-    fn dfs(i:usize) -> i32 {
-        if i <=1 {
+    fn dfs(i: usize) -> i32 {
+        if i <= 1 {
             return 1;
         }
-        dfs(i-1) + dfs(i-2)
+        dfs(i - 1) + dfs(i - 2)
     }
     dfs(n as usize)
 }
 
 // O(n)
 #[allow(dead_code)]
-fn climb_stairs_b(n:i32) -> i32 {
+fn climb_stairs_b(n: i32) -> i32 {
     let n = n as usize;
-    let mut f = vec![0; n+1];
+    let mut f = vec![0; n + 1];
     f[0] = 1;
     f[1] = 1;
-    for i in 2..=n{
-        f[i] = f[i-1] + f[i-2];
+    for i in 2..=n {
+        f[i] = f[i - 1] + f[i - 2];
     }
     f[n]
 }
@@ -53,7 +55,7 @@ fn climb_stairs_b(n:i32) -> i32 {
 // O(n)
 // i 没被用
 #[allow(dead_code)]
-fn climb_stairs_c(n:i32) -> i32{
+fn climb_stairs_c(n: i32) -> i32 {
     let mut f0 = 1;
     let mut f1 = 1;
     for i in 2..=n {
@@ -95,14 +97,13 @@ pub fn max_profit_two_pointer(prices: Vec<i32>) -> i32 {
     ans
 }
 
-
 #[cfg(test)]
 mod dy_tests {
     use super::*;
 
     #[test]
     fn robing_houses() {
-        let list_of_house = vec![1,4,5,1,2,3];
+        let list_of_house = vec![1, 4, 5, 1, 2, 3];
         assert_eq!(rob_a(list_of_house), 9);
     }
 

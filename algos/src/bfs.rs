@@ -2,8 +2,8 @@
 // 非递归做法是采用队列,广度优先遍只有迭代法
 
 use std::cell::RefCell;
-use std::rc::Rc;
 use std::collections::LinkedList;
+use std::rc::Rc;
 
 #[derive(Debug, PartialEq, Eq)]
 pub struct TreeNode {
@@ -27,24 +27,24 @@ impl TreeNode {
 // 迭代 & 层序遍历bfs & stack 不是应该用QUEUE？
 #[allow(dead_code)]
 pub fn max_depth_iteration(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
-    if root.is_none(){
+    if root.is_none() {
         return 0;
     }
     let mut max_depth: i32 = 0;
     let mut stack = vec![root.unwrap()];
     while !stack.is_empty() {
         let num = stack.len();
-        for _i in 0..num{
+        for _i in 0..num {
             let top = stack.remove(0);
-            if top.borrow_mut().left.is_some(){
+            if top.borrow_mut().left.is_some() {
                 stack.push(top.borrow_mut().left.take().unwrap());
             }
-            if top.borrow_mut().right.is_some(){
+            if top.borrow_mut().right.is_some() {
                 stack.push(top.borrow_mut().right.take().unwrap());
             }
-            }
-        max_depth+=1;
         }
+        max_depth += 1;
+    }
     max_depth
 }
 
@@ -58,7 +58,7 @@ pub fn max_depth(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
     let mut last_level_count = 1;
     let mut this_level_count = 0;
     let mut levels = 0;
-    
+
     while !queue.is_empty() {
         let last_node: Rc<RefCell<TreeNode>> = queue.remove(0);
         if last_node.as_ref().borrow().left.is_some() {
@@ -83,7 +83,7 @@ pub fn max_depth(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
 // pub fn max_depth(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
 //     if root.is_none(){
 //         return 0;
-//     } 
+//     }
 //     let mut res = 0;
 //     let mut queue = LinkedList::new();
 //     queue.push_back(root.clone());
@@ -99,7 +99,7 @@ pub fn max_depth(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
 //                 if !node.right.is_none() {
 //                     queue.push_back(node.right.clone());
 //                 }
-                
+
 //             }
 //         }
 //         qsize=queue.len();
@@ -115,10 +115,10 @@ pub fn max_depth(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
 
 //     #[test]
 //     fn it_works() {
-        // let list = Some(Rc::new(RefCell::new(TreeNode{ val:3, left: Some(Rc::new(RefCell::new(TreeNode::new(9)))), right: Some(Rc::new(RefCell::new(TreeNode{val: 20, left: Some(Rc::new(RefCell::new(TreeNode::new(15)))), right: Some(Rc::new(RefCell::new(TreeNode::new(7)))) }))) })));
+// let list = Some(Rc::new(RefCell::new(TreeNode{ val:3, left: Some(Rc::new(RefCell::new(TreeNode::new(9)))), right: Some(Rc::new(RefCell::new(TreeNode{val: 20, left: Some(Rc::new(RefCell::new(TreeNode::new(15)))), right: Some(Rc::new(RefCell::new(TreeNode::new(7)))) }))) })));
 //         assert_eq!(max_depth_iteration(tree![3, 9, 20, null, null, 15, 7]), 3);
 //     }
-// } 
+// }
 
 // pub fn to_tree(vec: Vec<Option<i32>>) -> Option<Rc<RefCell<TreeNode>>> {
 //     use std::collections::VecDeque;

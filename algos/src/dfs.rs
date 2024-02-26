@@ -5,8 +5,8 @@
 // https://programmercarl.com/
 
 use std::cell::RefCell;
-use std::rc::Rc;
 use std::cmp::max;
+use std::rc::Rc;
 
 #[derive(Debug, PartialEq, Eq)]
 pub struct TreeNode {
@@ -29,7 +29,7 @@ impl TreeNode {
 
 #[allow(dead_code)]
 // https://leetcode.cn/problems/binary-tree-preorder-traversal/solutions/1503889/custer-by-custerfun-l9zm/
-fn preorder_traversal(nodes: Option<Rc<RefCell<TreeNode>>>)-> Vec<i32>{
+fn preorder_traversal(nodes: Option<Rc<RefCell<TreeNode>>>) -> Vec<i32> {
     let mut result = Vec::new();
     if nodes.is_none() {
         return result;
@@ -37,7 +37,7 @@ fn preorder_traversal(nodes: Option<Rc<RefCell<TreeNode>>>)-> Vec<i32>{
     let mut stack = Vec::new();
     let mut r = nodes.clone();
 
-    while r.is_some() || !stack.is_empty(){
+    while r.is_some() || !stack.is_empty() {
         while let Some(node) = r {
             result.push(node.borrow().val);
             stack.push(node.clone());
@@ -52,7 +52,7 @@ fn preorder_traversal(nodes: Option<Rc<RefCell<TreeNode>>>)-> Vec<i32>{
 }
 
 #[allow(dead_code)]
-fn preorder_recursive(nodes: Option<Rc<RefCell<TreeNode>>>) -> Vec<i32>{
+fn preorder_recursive(nodes: Option<Rc<RefCell<TreeNode>>>) -> Vec<i32> {
     let mut result = vec![];
     if nodes.is_none() {
         return result;
@@ -60,7 +60,7 @@ fn preorder_recursive(nodes: Option<Rc<RefCell<TreeNode>>>) -> Vec<i32>{
     pre_recursive(nodes, &mut result);
     result
 }
-fn pre_recursive(nodes: Option<Rc<RefCell<TreeNode>>>, result: &mut Vec<i32>){
+fn pre_recursive(nodes: Option<Rc<RefCell<TreeNode>>>, result: &mut Vec<i32>) {
     match nodes {
         Some(node) => {
             result.push(node.borrow().val);
@@ -68,14 +68,14 @@ fn pre_recursive(nodes: Option<Rc<RefCell<TreeNode>>>, result: &mut Vec<i32>){
             pre_recursive(node.borrow().left.clone(), result);
             // 递归遍历右子树
             pre_recursive(node.borrow().right.clone(), result);
-        },
-        None => {},
+        }
+        None => {}
     }
 }
 
 #[allow(dead_code)]
 // https://leetcode.cn/problems/binary-tree-postorder-traversal/solutions/1503897/custer-by-custerfun-9gux/
-fn postorder_traversal(root: Option<Rc<RefCell<TreeNode>>>)-> Vec<i32>{
+fn postorder_traversal(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<i32> {
     let mut result = vec![];
     if root.is_none() {
         return result;
@@ -100,6 +100,36 @@ fn postorder_traversal(root: Option<Rc<RefCell<TreeNode>>>)-> Vec<i32>{
     result
 }
 
+#[allow(dead_code)]
+// https://leetcode.cn/problems/binary-tree-inorder-traversal/solutions/1503890/er-cha-shu-by-custerfun-zxm3/
+fn inorder_traversal(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<i32> {
+    let mut result = vec![];
+    if root.is_none() {
+        return result;
+    }
+
+    // 使用栈来保存需要返回后处理的节点
+    let mut stack = Vec::new();
+    let mut r = root.clone();
+
+    // 满足当前节点非空或者栈非空时执行循环
+    while r.is_some() || !stack.is_empty() {
+        // 若当前节点非空，将当前节点入栈，并进入其左子树访问
+        while let Some(node) = r {
+            stack.push(node.clone());
+            r = node.borrow().left.clone();
+        }
+
+        // 栈顶的节点出栈，访问其节点值，并进入其右子树访问
+        r = stack.pop();
+        if let Some(node) = r {
+            result.push(node.borrow().val);
+            r = node.borrow().right.clone();
+        }
+    }
+
+    result
+}
 
 // 深度优先
 // 递归计算出其左子树和右子树的最大深度，给出二叉树的最大深度
@@ -151,21 +181,35 @@ mod dfs_tests {
 
     #[test]
     fn max_depth_recusion_test() {
-        let list = Some(Rc::new(RefCell::new(TreeNode{ val:3, left: Some(Rc::new(RefCell::new(TreeNode::new(9)))), right: Some(Rc::new(RefCell::new(TreeNode{val: 20, left: Some(Rc::new(RefCell::new(TreeNode::new(15)))), right: Some(Rc::new(RefCell::new(TreeNode::new(7)))) }))) })));
+        let list = Some(Rc::new(RefCell::new(TreeNode {
+            val: 3,
+            left: Some(Rc::new(RefCell::new(TreeNode::new(9)))),
+            right: Some(Rc::new(RefCell::new(TreeNode {
+                val: 20,
+                left: Some(Rc::new(RefCell::new(TreeNode::new(15)))),
+                right: Some(Rc::new(RefCell::new(TreeNode::new(7)))),
+            }))),
+        })));
 
         assert_eq!(max_depth_recusion(list), 3);
     }
 
     #[test]
     fn preorder_traversal_test() {
-        assert_eq!(preorder_traversal(tree!(1,null,2,3)), [1,2,3]);
+        assert_eq!(preorder_traversal(tree!(1, null, 2, 3)), [1, 2, 3]);
     }
 
     #[test]
     fn postorder_traversal_test() {
-        assert_eq!(postorder_traversal(tree!(1,null,2,3)), [3,2,1]);
+        assert_eq!(postorder_traversal(tree!(1, null, 2, 3)), [3, 2, 1]);
+    }
+
+    #[test]
+    fn inorder_traversal_test() {
+        assert_eq!(inorder_traversal(tree!(1, null, 2, 3)), [1, 3, 2]);
     }
 }
+
 #[allow(dead_code)]
 pub fn to_tree(vec: Vec<Option<i32>>) -> Option<Rc<RefCell<TreeNode>>> {
     use std::collections::VecDeque;
