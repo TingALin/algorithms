@@ -73,6 +73,34 @@ fn pre_recursive(nodes: Option<Rc<RefCell<TreeNode>>>, result: &mut Vec<i32>){
     }
 }
 
+#[allow(dead_code)]
+// https://leetcode.cn/problems/binary-tree-postorder-traversal/solutions/1503897/custer-by-custerfun-9gux/
+fn postorder_traversal(root: Option<Rc<RefCell<TreeNode>>>)-> Vec<i32>{
+    let mut result = vec![];
+    if root.is_none() {
+        return result;
+    }
+    let mut stack1 = Vec::new();
+    let mut stack2 = Vec::new();
+    stack1.push(root);
+    // 将 stack1 栈顶的节点依次出栈，并将改节点放入 stack2，将该节点的左右子节点入 stack1
+    while let Some(Some(node)) = stack1.pop() {
+        if node.borrow().left.is_some() {
+            stack1.push(node.borrow().left.clone());
+        }
+        if node.borrow().right.is_some() {
+            stack1.push(node.borrow().right.clone());
+        }
+        stack2.push(Some(node));
+    }
+    // 将 stack2 栈顶的节点依次出栈，并访问其节点值
+    while let Some(Some(node)) = stack2.pop() {
+        result.push(node.borrow().val);
+    }
+    result
+}
+
+
 // 深度优先
 // 递归计算出其左子树和右子树的最大深度，给出二叉树的最大深度
 // 时间复杂度：O(n),其中 n 为二叉树节点的个数。每个节点在递归中只被遍历一次
@@ -131,6 +159,11 @@ mod dfs_tests {
     #[test]
     fn preorder_traversal_test() {
         assert_eq!(preorder_traversal(tree!(1,null,2,3)), [1,2,3]);
+    }
+
+    #[test]
+    fn postorder_traversal_test() {
+        assert_eq!(postorder_traversal(tree!(1,null,2,3)), [3,2,1]);
     }
 }
 #[allow(dead_code)]
