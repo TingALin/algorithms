@@ -1,5 +1,5 @@
 // Depth-First-Search
-// 非递归做法是采用栈
+// 非递归做法是采用栈，深度优先遍历有递归法，迭代法
 // 前序遍历 (preorder traversal) - 中序遍历 (inorder traversal) - 后序遍历 (postorder traversal)
 // https://leetcode.cn/problems/maximum-depth-of-binary-tree/solutions/1797307/by-carlsun-2-ojzh/
 // https://programmercarl.com/

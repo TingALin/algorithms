@@ -3,6 +3,7 @@ use std::marker::PhantomData;
 // use support::StorageValue;
 // https://github.com/yz89/substrate-heap/blob/master/runtime/src/heap.rs
 // 参考整体用法和结构, 没写是MIN/MAX
+// https://www.cnblogs.com/741162830qq/p/16994193.html
 
 pub trait Parameter: Codec + EncodeLike + Clone + Eq + Debug + TypeInfo { }
 

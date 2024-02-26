@@ -1,7 +1,6 @@
-// https://leetcode.cn/problems/best-time-to-buy-and-sell-stock/description/
-// https://leetcode.cn/problems/house-robber/description/
-// https://leetcode.cn/problems/climbing-stairs/solutions/2560716/jiao-ni-yi-bu-bu-si-kao-dong-tai-gui-hua-7zm1/
+// https://leetcode.cn/problems/longest-common-subsequence/description/
 
+// https://leetcode.cn/problems/house-robber/description/
 #[allow(dead_code)]
 // 递推方程：dp[i] = max(dp[i-1], dp[i-2]+nums[i]);
 pub fn rob_a(nums: Vec<i32>) -> i32 {
@@ -25,6 +24,7 @@ pub fn rob_b(nums: Vec<i32>) -> i32 {
     prev
 }
 
+// https://leetcode.cn/problems/climbing-stairs/solutions/2560716/jiao-ni-yi-bu-bu-si-kao-dong-tai-gui-hua-7zm1/
 // O(2^n)
 #[allow(dead_code)]
 fn climb_stairs_a(n: i32) -> i32 {
@@ -64,6 +64,7 @@ fn climb_stairs_c(n:i32) -> i32{
     f1
 }
 
+// https://leetcode.cn/problems/best-time-to-buy-and-sell-stock/description/
 // O(n)
 #[allow(dead_code)]
 pub fn max_profit(prices: Vec<i32>) -> i32 {

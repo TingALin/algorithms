@@ -1,9 +1,11 @@
 // Breath First Search
-// 非递归做法是采用队列
+// 非递归做法是采用队列,广度优先遍只有迭代法
 
 use std::cell::RefCell;
 use std::rc::Rc;
+use std::collections::LinkedList;
 
+#[derive(Debug, PartialEq, Eq)]
 pub struct TreeNode {
     pub val: i32,
     pub left: Option<Rc<RefCell<TreeNode>>>,
@@ -22,7 +24,7 @@ impl TreeNode {
     }
 }
 
-// 迭代 & 层序遍历bfs & stack 不是应该用QUEUE？ 有前/中/后序
+// 迭代 & 层序遍历bfs & stack 不是应该用QUEUE？
 #[allow(dead_code)]
 pub fn max_depth_iteration(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
     if root.is_none(){
@@ -46,15 +48,77 @@ pub fn max_depth_iteration(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
     max_depth
 }
 
+pub fn max_depth(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
+    if root.is_none() {
+        return 0;
+    }
+
+    let mut queue: Vec<Rc<RefCell<TreeNode>>> = Vec::new();
+    queue.push(root.unwrap());
+    let mut last_level_count = 1;
+    let mut this_level_count = 0;
+    let mut levels = 0;
+    
+    while !queue.is_empty() {
+        let last_node: Rc<RefCell<TreeNode>> = queue.remove(0);
+        if last_node.as_ref().borrow().left.is_some() {
+            this_level_count += 1;
+            queue.push(last_node.as_ref().borrow().left.clone().unwrap());
+        }
+        if last_node.as_ref().borrow().right.is_some() {
+            this_level_count += 1;
+            queue.push(last_node.as_ref().borrow().right.clone().unwrap());
+        }
+        last_level_count -= 1;
+        if last_level_count == 0 {
+            levels += 1;
+            last_level_count = this_level_count;
+            this_level_count = 0;
+        }
+    }
+
+    return levels;
+}
+
+pub fn max_depth(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
+    if root.is_none(){
+        return 0;
+    } 
+    let mut res = 0;
+    let mut queue = LinkedList::new();
+    queue.push_back(root.clone());
+    let mut qsize = queue.len();
+    while queue.len()>0 {
+        for i in 0..qsize {
+            let cmp = queue.pop_front();
+            if let Some(Some(rced_node)) = cmp {
+                let node = rced_node.borrow();
+                if !node.left.is_none() {
+                    queue.push_back(node.left.clone());
+                }
+                if !node.right.is_none() {
+                    queue.push_back(node.right.clone());
+                }
+                
+            }
+        }
+        qsize=queue.len();
+        res += 1;
+    }
+    res
+
+}
+
 // #[cfg(test)]
 // mod tests {
 //     use super::*;
 
 //     #[test]
 //     fn it_works() {
+        // let list = Some(Rc::new(RefCell::new(TreeNode{ val:3, left: Some(Rc::new(RefCell::new(TreeNode::new(9)))), right: Some(Rc::new(RefCell::new(TreeNode{val: 20, left: Some(Rc::new(RefCell::new(TreeNode::new(15)))), right: Some(Rc::new(RefCell::new(TreeNode::new(7)))) }))) })));
 //         assert_eq!(max_depth_iteration(tree![3, 9, 20, null, null, 15, 7]), 3);
 //     }
-// }
+// } 
 
 // pub fn to_tree(vec: Vec<Option<i32>>) -> Option<Rc<RefCell<TreeNode>>> {
 //     use std::collections::VecDeque;
