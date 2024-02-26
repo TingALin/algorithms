@@ -80,34 +80,34 @@ pub fn max_depth(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
     return levels;
 }
 
-pub fn max_depth(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
-    if root.is_none(){
-        return 0;
-    } 
-    let mut res = 0;
-    let mut queue = LinkedList::new();
-    queue.push_back(root.clone());
-    let mut qsize = queue.len();
-    while queue.len()>0 {
-        for i in 0..qsize {
-            let cmp = queue.pop_front();
-            if let Some(Some(rced_node)) = cmp {
-                let node = rced_node.borrow();
-                if !node.left.is_none() {
-                    queue.push_back(node.left.clone());
-                }
-                if !node.right.is_none() {
-                    queue.push_back(node.right.clone());
-                }
+// pub fn max_depth(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
+//     if root.is_none(){
+//         return 0;
+//     } 
+//     let mut res = 0;
+//     let mut queue = LinkedList::new();
+//     queue.push_back(root.clone());
+//     let mut qsize = queue.len();
+//     while queue.len()>0 {
+//         for i in 0..qsize {
+//             let cmp = queue.pop_front();
+//             if let Some(Some(rced_node)) = cmp {
+//                 let node = rced_node.borrow();
+//                 if !node.left.is_none() {
+//                     queue.push_back(node.left.clone());
+//                 }
+//                 if !node.right.is_none() {
+//                     queue.push_back(node.right.clone());
+//                 }
                 
-            }
-        }
-        qsize=queue.len();
-        res += 1;
-    }
-    res
+//             }
+//         }
+//         qsize=queue.len();
+//         res += 1;
+//     }
+//     res
 
-}
+// }
 
 // #[cfg(test)]
 // mod tests {

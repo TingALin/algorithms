@@ -100,3 +100,37 @@ mod back_tracking_tests {
         // sudoku(board)
     }
 }
+
+// let board = [['5','3','.','.','7','.','.','.','.'],['6','.','.','1','9','5','.','.','.'],['.','9','8','.','.','.','.','6','.'],['8','.','.','.','6','.','.','.','3'],['4','.','.','8','.','3','.','.','1'],['7','.','.','.','2','.','.','.','6'],['.','6','.','.','.','.','2','8','.'],['.','.','.','4','1','9','.','.','5'],['.','.','.','.','8','.','.','7','9']];
+
+    // let mut line = vec![0; 9];  // 行字典
+    // let mut row = vec![0; 9];  // 列字典
+    // let mut square = vec![vec![0; 3]; 3];  // 9宫格字典
+    // let mut unsolved = Vec::new();
+    // for i in 0..9 {
+    //     for j in 0..9 {
+    //         if board[i][j] != '.' {
+    //             // bin的末位代表1，其他位置通过移位实现
+    //             println!("board[{}][{}] is {:?}",i, j, board[i][j]);
+    //             let bin = 1 << (board[i][j] as u8 - '1' as u8);
+    //             println!("bin is {:?}", bin);
+    //             // 或操作把bin上为1的位置，赋给line[i]对应位
+    //             println!("line[{}] before {:?}", i, line[i]);
+    //             line[i] |= bin;
+    //             println!("line[{}] after {:?}",i, line[i]);
+    //             println!("row[{}] before {:?}",j, row[j]);
+    //             row[j] |= bin;
+    //             println!("row[{}] after {:?}", j, row[j]);
+                
+    //             square[i/3][j/3] |= bin;
+    //             println!("square[{}/3][{}/3]: {:?}", i, j, square[i/3][j/3]);
+    //         } else {
+    //             // 存储待解决的位置，降低迭代次数
+    //             unsolved.push((i, j));
+    //         }
+    //     }
+    // }
+
+    // let bin:i32 = 0b111111111000;
+    // let b = bin.trailing_zeros();
+    // println!("{:?}", b);

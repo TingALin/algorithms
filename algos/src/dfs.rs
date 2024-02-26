@@ -8,6 +8,7 @@ use std::cell::RefCell;
 use std::rc::Rc;
 use std::cmp::max;
 
+#[derive(Debug, PartialEq, Eq)]
 pub struct TreeNode {
     pub val: i32,
     pub left: Option<Rc<RefCell<TreeNode>>>,
@@ -23,6 +24,52 @@ impl TreeNode {
             left: None,
             right: None,
         }
+    }
+}
+
+#[allow(dead_code)]
+// https://leetcode.cn/problems/binary-tree-preorder-traversal/solutions/1503889/custer-by-custerfun-l9zm/
+fn preorder_traversal(nodes: Option<Rc<RefCell<TreeNode>>>)-> Vec<i32>{
+    let mut result = Vec::new();
+    if nodes.is_none() {
+        return result;
+    }
+    let mut stack = Vec::new();
+    let mut r = nodes.clone();
+
+    while r.is_some() || !stack.is_empty(){
+        while let Some(node) = r {
+            result.push(node.borrow().val);
+            stack.push(node.clone());
+            r = node.borrow().left.clone();
+        }
+        r = stack.pop();
+        if let Some(node) = r {
+            r = node.borrow().right.clone();
+        }
+    }
+    result
+}
+
+#[allow(dead_code)]
+fn preorder_recursive(nodes: Option<Rc<RefCell<TreeNode>>>) -> Vec<i32>{
+    let mut result = vec![];
+    if nodes.is_none() {
+        return result;
+    }
+    pre_recursive(nodes, &mut result);
+    result
+}
+fn pre_recursive(nodes: Option<Rc<RefCell<TreeNode>>>, result: &mut Vec<i32>){
+    match nodes {
+        Some(node) => {
+            result.push(node.borrow().val);
+            // 递归遍历左子树
+            pre_recursive(node.borrow().left.clone(), result);
+            // 递归遍历右子树
+            pre_recursive(node.borrow().right.clone(), result);
+        },
+        None => {},
     }
 }
 
@@ -70,6 +117,8 @@ pub fn max_depth_recusion(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
 
 #[cfg(test)]
 mod dfs_tests {
+    use crate::tree;
+
     use super::*;
 
     #[test]
@@ -78,4 +127,46 @@ mod dfs_tests {
 
         assert_eq!(max_depth_recusion(list), 3);
     }
+
+    #[test]
+    fn preorder_traversal_test() {
+        assert_eq!(preorder_traversal(tree!(1,null,2,3)), [1,2,3]);
+    }
+}
+#[allow(dead_code)]
+pub fn to_tree(vec: Vec<Option<i32>>) -> Option<Rc<RefCell<TreeNode>>> {
+    use std::collections::VecDeque;
+    let head = Some(Rc::new(RefCell::new(TreeNode::new(vec[0].unwrap()))));
+    let mut queue = VecDeque::new();
+    queue.push_back(head.as_ref().unwrap().clone());
+
+    for children in vec[1..].chunks(2) {
+        let parent = queue.pop_front().unwrap();
+        if let Some(v) = children[0] {
+            parent.borrow_mut().left = Some(Rc::new(RefCell::new(TreeNode::new(v))));
+            queue.push_back(parent.borrow().left.as_ref().unwrap().clone());
+        }
+        if children.len() > 1 {
+            if let Some(v) = children[1] {
+                parent.borrow_mut().right = Some(Rc::new(RefCell::new(TreeNode::new(v))));
+                queue.push_back(parent.borrow().right.as_ref().unwrap().clone());
+            }
+        }
+    }
+    head
+}
+
+#[macro_export]
+macro_rules! tree {
+    () => {
+        None
+    };
+    ($($e:expr),*) => {
+        {
+            let vec = vec![$(stringify!($e)), *];
+            let vec = vec.into_iter().map(|v| v.parse::<i32>().ok()).collect::<Vec<_>>();
+            to_tree(vec)
+        }
+    };
+    ($($e:expr,)*) => {(tree![$($e),*])};
 }
