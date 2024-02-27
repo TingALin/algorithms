@@ -80,6 +80,7 @@ pub fn max_profit(prices: Vec<i32>) -> i32 {
 }
 
 // 双指针
+#[allow(dead_code)]
 pub fn max_profit_two_pointer(prices: Vec<i32>) -> i32 {
     if prices.len() == 1 {
         return 0;

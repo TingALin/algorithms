@@ -2,8 +2,8 @@
 // 非递归做法是采用队列,广度优先遍只有迭代法
 
 use std::cell::RefCell;
-use std::collections::LinkedList;
 use std::rc::Rc;
+use std::collections::VecDeque;
 
 #[derive(Debug, PartialEq, Eq)]
 pub struct TreeNode {
@@ -47,12 +47,11 @@ pub fn max_depth_iteration(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
     }
     max_depth
 }
-
+#[allow(dead_code)]
 pub fn max_depth(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
     if root.is_none() {
         return 0;
     }
-
     let mut queue: Vec<Rc<RefCell<TreeNode>>> = Vec::new();
     queue.push(root.unwrap());
     let mut last_level_count = 1;
@@ -78,6 +77,51 @@ pub fn max_depth(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
     }
 
     return levels;
+}
+
+pub fn level_order(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<Vec<i32>> {
+    let mut res = vec![];
+    let mut queue = VecDeque::new();
+    if root.is_some() {
+        queue.push_back(root);
+    }
+    while !queue.is_empty() {
+        let mut temp = vec![];
+        for _ in 0..queue.len() {
+            let node = queue.pop_front().unwrap().unwrap();
+            temp.push(node.borrow().val);
+            if node.borrow().left.is_some() {
+                queue.push_back(node.borrow().left.clone());
+            }
+            if node.borrow().right.is_some() {
+                queue.push_back(node.borrow().right.clone());
+            }
+        }
+        res.push(temp);
+    }
+    res
+}
+pub fn level_order_bottom(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<Vec<i32>> {
+    let mut res = vec![];
+    let mut queue = VecDeque::new();
+    if root.is_some() {
+        queue.push_back(root);
+    }
+    while !queue.is_empty() {
+        let mut temp = vec![];
+        for _ in 0..queue.len() {
+            let node = queue.pop_front().unwrap().unwrap();
+            temp.push(node.borrow().val);
+            if node.borrow().left.is_some() {
+                queue.push_back(node.borrow().left.clone());
+            }
+            if node.borrow().right.is_some() {
+                queue.push_back(node.borrow().right.clone());
+            }
+        }
+        res.push(temp);
+    }
+    res.into_iter().rev().collect()
 }
 
 // pub fn max_depth(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
