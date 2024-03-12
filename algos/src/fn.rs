@@ -51,10 +51,26 @@ fn make_tester<'a>(answer:&'a str) -> impl Fn(&str)->bool + 'a{
 }
 
 fn is_palindrome(number: i32) -> bool{
-    let n= number.to_string();
-    let n_rev = n.as_str().chars().rev().collect::<String>();
-    n == n_rev
+    // let n= number.to_string();
+    // let n_rev = n.as_str().chars().rev().collect::<String>();
+    // n == n_rev
+
     // x.to_string().chars().rev().eq(x.to_string().chars())
+    
+    if x < 0 || (x % 10 == 0 && x != 0) {
+        return false;
+        }
+        let mut n = 0;
+        let mut num = x;
+
+        while num > 0 {
+            n = n * 10 + num % 10;
+            num /= 10;
+        }
+        match x == n {
+            true => return true,
+            false => return false,
+    }
 }
 
 fn main() {
