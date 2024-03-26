@@ -29,6 +29,21 @@ fn sum_of_two_hashmap(input: Vec<i32>, target: i32) -> Vec<i32> {
     // unreachable!()
 }
 
+fn sum_of_three (arr: Vec<i32>, target:i32)->(i32, i32, i32) {
+    let mut map = HashMap::new();
+    for first in 0..arr.len(){
+        for second in 1..arr.len() {
+            if let Some(k) = map.get(&(target - arr[first] - arr[second])){
+                if *k != first as i32 && *k != second as i32{
+                    return(first as i32, second as i32, *k);
+                } 
+            }
+        }
+        map.insert(arr[first], first as i32);
+    }
+    unreachable!()
+}
+
 // O(nlogn) & Two pointers
 #[allow(dead_code)]
 fn sum_of_two_two_pointers(input: &mut Vec<i32>, target: i32) -> Vec<i32> {
