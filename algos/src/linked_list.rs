@@ -35,6 +35,29 @@ impl List {
     }
 }
 
+fn reverse_list_two_pointer(head: Option<Box<Node>>) -> Option<Box<Node>> {
+    let mut cur = head;
+    let mut pre = None;
+    while let Some(mut node) = cur.take() {
+        cur = node.next;
+        node.next = pre;
+        pre = Some(node);
+    }
+    pre
+}
+
+fn reverse_list_recursive(head: Option<Box<Node>>) -> Option<Box<Node>> {
+    fn rev(mut head :Option<Box<Node>>, mut pre :Option<Box<Node>>) -> Option<Box<Node>>{
+        if let Some(mut node) = head.take(){
+            let cur = node.next;
+            node.next = pre;
+            pre = Some(node);
+        }
+        pre
+    }
+    rev(head, None)
+}
+
 #[cfg(test)]
 mod linked_list_tests {
     use super::*;
